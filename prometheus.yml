@@ -6,12 +6,14 @@ global:
 scrape_configs:
   - job_name: 'promswarmconnect'
     relabel_configs:
+    - source_labels: [__meta_triton_machine_image]
+      target_label: job
     - source_labels: [__meta_triton_machine_id]
+      target_label: instance
+    - source_labels: [__meta_triton_machine_alias]
       target_label: __address__
     - source_labels: [__meta_triton_server_id]
       target_label: __metrics_path__
-    - source_labels: [__meta_triton_machine_alias]
-      target_label: job
     triton_sd_configs:
     - account: 'dummyaccount'
       dns_suffix: 'dummy' # required
