@@ -1,4 +1,4 @@
-FROM prom/prometheus:v2.10.0
+FROM prom/prometheus:v2.15.2
 
 # add backup capability
 ADD bin/prom-snapshot-as-tar.sh /usr/local/bin/prom-snapshot-as-tar.sh
