@@ -3,7 +3,11 @@
 
 Our Prometheus config, as Docker image.
 
-Ready-to-use, mostly stateless image and does not require any special configuration.
+
+Required ENV variables
+----------------------
+
+- `SCRAPER_BEARER_TOKEN` - auth for scraping static targets
 
 
 Pro-tip: backups with µbackup

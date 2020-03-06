@@ -1,13 +1,16 @@
 FROM prom/prometheus:v2.15.2
 
+# remove entrypoint from parent image
+ENTRYPOINT []
+
+# need special script for startup to write some dynamic configuration
+CMD ["/bin/run-prometheus.sh"]
+
 # add backup capability
-ADD bin/prom-snapshot-as-tar.sh /usr/local/bin/prom-snapshot-as-tar.sh
+ADD bin/prom-snapshot-as-tar.sh /bin/prom-snapshot-as-tar.sh
+
+ADD bin/run-prometheus.sh /bin/run-prometheus.sh
+
+ADD static-targets/ /etc/prometheus/static-targets
 
 ADD prometheus.yml /etc/prometheus/prometheus.yml
-
-# need to override this whole bunch for web.enable-admin-api (for taking backups)
-CMD [ "--config.file=/etc/prometheus/prometheus.yml", \
-	"--storage.tsdb.path=/prometheus", \
-	"--web.console.libraries=/usr/share/prometheus/console_libraries", \
-	"--web.console.templates=/usr/share/prometheus/consoles", \
-	"--web.enable-admin-api" ]

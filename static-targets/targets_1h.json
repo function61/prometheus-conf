@@ -1,0 +1,9 @@
+[
+	{
+		"targets": ["function61.com"],
+		"labels": {
+			"job": "github2prometheus",
+			"__metrics_path__": "/api/github2prometheus/metrics"
+		}
+	}
+]
