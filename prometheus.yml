@@ -18,8 +18,15 @@ scrape_configs:
       target_label: instance
     - source_labels: [__meta_triton_machine_alias]
       target_label: __address__
+    - source_labels: [__meta_triton_machine_brand]
+      target_label: __scheme__
     - source_labels: [__meta_triton_server_id]
       target_label: __metrics_path__
+    tls_config:
+      # can't specify this per-target, so since some of them can require insecure, sadly
+      # we must specify this for all. shouldn't be too much of an issue, since services
+      # are in LAN though
+      insecure_skip_verify: true
     triton_sd_configs:
     - account: 'dummyaccount'
       dns_suffix: 'dummy' # required
