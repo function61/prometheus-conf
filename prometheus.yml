@@ -7,7 +7,7 @@ global:
 # that are static at the moment.
 
 # due to how Prometheus works, we have to configure distinct scrape jobs for each
-# different scrape_interval :(
+# different config detail: (scrape_interval, http|https, bearer_token) :(
 
 scrape_configs:
   - job_name: 'promswarmconnect'
@@ -36,25 +36,54 @@ scrape_configs:
       version: 1
       tls_config:
         insecure_skip_verify: true
+
+  - job_name: 'targets_5s_https'
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    scheme: https
+    relabel_configs:
+      - target_label: instance
+        replacement: na
+    file_sd_configs:
+    - refresh_interval: 10s
+      files:
+      - "/etc/prometheus/static-targets/targets_5s_https.json"
+
+  - job_name: 'targets_5s_https_insecureskipverify'
+    scrape_interval: 5s
+    scrape_timeout: 5s
+    scheme: https
+    bearer_token_file: /etc/prometheus/scraper-bearer-token.secret
+    tls_config:
+      insecure_skip_verify: true
+    relabel_configs:
+      - target_label: instance
+        replacement: na
+    file_sd_configs:
+    - refresh_interval: 10s
+      files:
+      - "/etc/prometheus/static-targets/targets_5s_https_insecureskipverify.json"
+
   - job_name: 'file_targets_5m'
     scrape_interval: 5m
     scrape_timeout: 20s
     scheme: https
     bearer_token_file: /etc/prometheus/scraper-bearer-token.secret
     relabel_configs:
-      - target_label: instance 
+      - target_label: instance
         replacement: na
     file_sd_configs:
     - refresh_interval: 10s
       files:
       - "/etc/prometheus/static-targets/targets_5m.json"
+
   - job_name: 'file_targets_1h'
     scrape_interval: 1h
     scrape_timeout: 20s
     scheme: https
     bearer_token_file: /etc/prometheus/scraper-bearer-token.secret
     relabel_configs:
-      - target_label: instance 
+      - target_label: instance
         replacement: na
     file_sd_configs:
     - refresh_interval: 10s
